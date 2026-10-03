@@ -4,6 +4,7 @@ import 'core/rotas.dart';
 import 'core/tema.dart';
 import 'ui/telas/home_screen.dart';
 import 'ui/telas/login_screen.dart';
+import 'ui/telas/cadastro_produto_screen.dart';
 
 
 void main() {
@@ -23,6 +24,7 @@ class EstoqueApp extends StatelessWidget {
       routes: {
         Rotas.login: (context) => const LoginScreen(),
         Rotas.home: (context) => const HomeScreen(),
+        Rotas.cadastro: (context) => const CadastroProdutoScreen(),
       },
     );
   }
