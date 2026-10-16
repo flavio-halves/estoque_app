@@ -1,15 +1,20 @@
+import '../db/app_database.dart';
 import '../../models/produto.dart';
+
 class ProdutoRepository {
-// Instância única (por enquanto, os dados ficam na memória).
   static final ProdutoRepository instance = ProdutoRepository._interno();
   ProdutoRepository._interno();
-  final List<Produto> _produtos = [
-    Produto(nome: 'Caneta azul',   categoria: 'Papelaria',
-        preco: 3.50,  quantidade: 20),
 
-    Produto(nome: 'Caderno 96fls', categoria: 'Papelaria',
-        preco: 15.90, quantidade: 8),
-  ];
-  List<Produto> listar() => List.unmodifiable(_produtos);
-  void adicionar(Produto p) => _produtos.add(p);
+  // Lê todos os produtos do banco (ordenados por nome).
+  Future<List<Produto>> listar() async {
+    final db = await AppDatabase.instance;
+    final linhas = await db.query('produtos', orderBy: 'nome');
+    return linhas.map((linha) => Produto.fromMap(linha)).toList();
+  }
+
+  // Grava um novo produto no banco.
+  Future<void> adicionar(Produto p) async {
+    final db = await AppDatabase.instance;
+    await db.insert('produtos', p.toMap());
+  }
 }
